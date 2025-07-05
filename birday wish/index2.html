@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Memory Lane</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Soft Color Palette */
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --soft-pink: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --lavender: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --peach: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            --mint: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+
+            --bg-primary: #f8f9ff;
+            --bg-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --text-light: #a0aec0;
+            --border-color: #e2e8f0;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-large: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+            --border-radius: 20px;
+            --border-radius-small: 12px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-fast: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #ffecd2, #fcb69f);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Theme Selector */
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            border-color: white;
+        }
+
+        .theme-btn.active {
+            border-color: #333;
+            transform: scale(1.2);
+        }
+
+        .theme-default {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .theme-sunset {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        }
+
+        .theme-ocean {
+            background: linear-gradient(135deg, #0093E9, #80D0C7);
+        }
+
+        .theme-forest {
+            background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+        }
+
+        /* Music Controls */
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            background: var(--primary-gradient);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart,
+        .floating-star,
+        .floating-bubble {
+            position: absolute;
+            opacity: 0.6;
+        }
+
+        .floating-heart {
+            color: #ff6b9d;
+            animation: floatUp 8s linear infinite;
+        }
+
+        .floating-star {
+            color: #ffd93d;
+            animation: floatUp 10s linear infinite;
+        }
+
+        .floating-bubble {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: floatUp 12s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-large);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Typography */
+        .main-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3));
+            }
+
+            to {
+                filter: drop-shadow(0 0 20px rgba(118, 75, 162, 0.5));
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            background: var(--soft-pink);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Buttons */
+        .btn {
+            position: relative;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+            box-shadow: var(--shadow-soft);
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--soft-pink);
+            color: white;
+        }
+
+        .btn-accent {
+            background: var(--lavender);
+            color: white;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Photo Upload */
+        .upload-section {
+            margin: 30px 0;
+            padding: 30px;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition-fast);
+        }
+
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .upload-label {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--mint);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .upload-label:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Photo Gallery */
+        .gallery-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover,
+        .control-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .photo-gallery.masonry {
+            columns: 3;
+            column-gap: 25px;
+        }
+
+        .photo-gallery.masonry .photo-card {
+            break-inside: avoid;
+            margin-bottom: 25px;
+        }
+
+        .photo-card {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+            cursor: pointer;
+            background: white;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-large);
+        }
+
+        .photo-container {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            opacity: 0;
+        }
+
+        .photo-container img.loaded {
+            opacity: 1;
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.6));
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .photo-card:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .view-icon {
+            color: white;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .photo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .photo-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .photo-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .photo-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+            z-index: 5;
+        }
+
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active {
+            color: #ff6b9d;
+        }
+
+        /* Loading Placeholder */
+        .photo-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: var(--border-radius-small);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-large);
+            transform: scale(0.8);
+            transition: var(--transition);
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-image-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .zoom-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+
+        .zoom-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .lightbox-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .lightbox-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .lightbox-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            transition: var(--transition-fast);
+        }
+
+        .lightbox-close:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        /* Navigation Controls */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            transition: var(--transition-fast);
+        }
+
+        .lightbox-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Slideshow Mode */
+        .slideshow-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 25px;
+        }
+
+        .slideshow-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .slideshow-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .slideshow-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #667eea;
+            transition: width 0.1s ease;
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* Keyboard Shortcuts Panel */
+        .shortcuts-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-large);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .shortcuts-panel.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .shortcuts-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .shortcuts-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .shortcut-key {
+            background: #f5f5f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Special Features */
+        .emoji-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: emojifall 8s linear infinite;
+        }
+
+        @keyframes emojifall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .surprise-box {
+            background: var(--peach);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .surprise-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .surprise-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .surprise-text {
+            font-size: 1.2rem;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            .photo-gallery {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .photo-gallery.masonry {
+                columns: 2;
+            }
+
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .theme-selector,
+            .music-controls {
+                position: relative;
+                margin: 10px auto;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .lightbox-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+
+            .photo-gallery.masonry {
+                columns: 1;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-gradient);
+            border-radius: 4px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--primary-gradient);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            z-index: 1002;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <div class="theme-btn theme-default active" data-theme="default" title="Default Theme"></div>
+        <div class="theme-btn theme-sunset" data-theme="sunset" title="Sunset Theme"></div>
+        <div class="theme-btn theme-ocean" data-theme="ocean" title="Ocean Theme"></div>
+        <div class="theme-btn theme-forest" data-theme="forest" title="Forest Theme"></div>
+    </div>
+
+    <!-- Music Controls -->
+    <div class="music-controls">
+        <button class="music-btn" id="playPauseBtn" title="Play/Pause Music">
+            <i class="fas fa-play"></i>
+        </button>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" title="Volume">
+        <button class="music-btn" onclick="app.showShortcuts()" title="Keyboard Shortcuts (?)">
+            <i class="fas fa-question"></i>
+        </button>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-elements" id="floating-elements"></div>
+
+    <!-- Emoji Rain -->
+    <div class="emoji-rain" id="emoji-rain"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <div class="content-card">
+
+            <!-- Welcome Screen -->
+            <div class="screen active" id="welcome-screen">
+                <h1 class="main-title">
+                    Happy Birthday, Bestie!
+                    <i class="fas fa-birthday-cake" style="color: #ff6b9d;"></i>
+                </h1>
+                <p class="subtitle">
+                    Ready for a magical journey through our beautiful memories? ✨
+                </p>
+                <div class="navigation">
+                    <button class="btn btn-primary" onclick="app.showScreen('memory-lane')">
+                        <i class="fas fa-heart"></i> Start the Journey
+                    </button>
+                    <button class="btn btn-secondary" onclick="app.showScreen('upload-screen')">
+                        <i class="fas fa-plus"></i> Add Your Photos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Photo Upload Screen -->
+            <div class="screen" id="upload-screen">
+                <h2 class="section-title">Add Your Memories</h2>
+                <p class="subtitle">Upload your favorite photos to make this gallery even more special!</p>
+
+                <div class="upload-section" id="uploadSection">
+                    <i class="fas fa-cloud-upload-alt"
+                        style="font-size: 3rem; color: var(--text-light); margin-bottom: 20px;"></i>
+                    <p style="margin-bottom: 20px;">Drag and drop photos here, or click to browse</p>
+                    <label for="photoUpload" class="upload-label">
+                        <i class="fas fa-image"></i> Choose Photos
+                    </label>
+                    <input type="file" id="photoUpload" class="upload-input" multiple accept="image/*">
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+                        Supports JPG, PNG, GIF, WebP • Max 10 photos at once
+                    </p>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="app.showScreen('welcome-screen')">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="app.showScreen('memory-lane')">
+                        <i class="fas fa-images"></i> View Gallery
+                    </button>
+                </div>
+            </div>
+
+            <!-- Memory Lane Screen -->
+            <div class="screen" id="memory-lane">
+                <h2 class="section-title">Our Beautiful Memories</h2>
+                <p class="subtitle">Click on any photo to view it in full size and relive those special moments!</p>
+
+                <!-- Gallery Controls -->
+                <div class="gallery-controls">
+                    <button class="control-btn active" data-layout="grid">
+                        <i class="fas fa-th"></i> Grid
+                    </button>
+                    <button class="control-btn" data-layout="masonry">
+                        <i class="fas fa-th-large"></i> Masonry
+                    </button>
+                    <button class="control-btn" onclick="app.startSlideshow()">
+                        <i class="fas fa-play"></i> Slideshow
+                    </button>
+                    <button class="control-btn" onclick="app.showFavorites()">
+                        <i class="fas fa-heart"></i> Favorites
+                    </button>
+                </div>
+
+                <div class="photo-gallery" id="photoGallery">
+                    <div class="photo-card" data-index="0" onclick="app.openLightbox(0)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(0, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/400/300" alt="Our first adventure together"
+                                onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(0, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(0, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(0, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">First Adventure</h3>
+                            <p class="photo-description">The day we became inseparable friends</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-card" data-index="1" onclick="app.openLightbox(1)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(1, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/400/300" alt="Perfect beach day" onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(1, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(1, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(1, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">Beach Bliss</h3>
+                            <p class="photo-description">Sun, sand, and endless laughter</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-card" data-index="2" onclick="app.openLightbox(2)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(2, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/400/300" alt="Sunset memories" onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(2, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(2, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(2, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">Golden Hour</h3>
+                            <p class="photo-description">Our favorite sunset watching spot</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-card" data-index="3" onclick="app.openLightbox(3)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(3, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/400/300" alt="Your beautiful smile"
+                                onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(3, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(3, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(3, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">Pure Joy</h3>
+                            <p class="photo-description">Your smile lights up every room</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="app.showScreen('welcome-screen')">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="app.showScreen('slideshow')">
+                        <i class="fas fa-images"></i> More Photos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slideshow Screen -->
+            <div class="screen" id="slideshow">
+                <h2 class="section-title">Photo Collection</h2>
+                <p class="subtitle">More precious moments from our friendship journey</p>
+
+                <div class="photo-gallery">
+                    <div class="photo-card" data-index="4" onclick="app.openLightbox(4)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(4, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/350/250" alt="Amazing times" onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(4, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(4, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(4, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">Amazing Times</h3>
+                            <p class="photo-description">Every moment with you is special</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-card" data-index="5" onclick="app.openLightbox(5)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(5, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/350/250" alt="Unforgettable moments"
+                                onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(5, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(5, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(5, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">Unforgettable</h3>
+                            <p class="photo-description">Memories that will last forever</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-card" data-index="6" onclick="app.openLightbox(6)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(6, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/350/250" alt="Cherished experiences"
+                                onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(6, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(6, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(6, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">Cherished</h3>
+                            <p class="photo-description">Timeless experiences to treasure</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-card" data-index="7" onclick="app.openLightbox(7)">
+                        <button class="favorite-btn" onclick="app.toggleFavorite(7, event)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <div class="photo-container">
+                            <div class="photo-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                            <img src="/api/placeholder/350/250" alt="Best friends forever"
+                                onload="app.imageLoaded(this)">
+                            <div class="photo-overlay">
+                                <i class="fas fa-search-plus view-icon"></i>
+                                <div class="photo-actions">
+                                    <button class="action-btn" onclick="app.downloadPhoto(7, event)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.sharePhoto(7, event)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="app.toggleFavorite(7, event)" title="Favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photo-info">
+                            <h3 class="photo-title">BFF Forever</h3>
+                            <p class="photo-description">Through thick and thin, always together</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="app.showScreen('memory-lane')">
+                        <i class="fas fa-arrow-left"></i> Back to Memories
+                    </button>
+                    <button class="btn btn-accent" onclick="app.showScreen('surprise')">
+                        <i class="fas fa-gift"></i> Special Surprise
+                    </button>
+                </div>
+            </div>
+
+            <!-- Surprise Screen -->
+            <div class="screen" id="surprise">
+                <h2 class="section-title">Your Special Surprise!</h2>
+
+                <div class="surprise-box">
+                    <div class="surprise-content">
+                        <p class="surprise-text">
+                            <i class="fas fa-star" style="color: #ffd93d;"></i>
+                            You're not just my best friend, you're my chosen family!
+                            <i class="fas fa-star" style="color: #ffd93d;"></i>
+                        </p>
+                    </div>
+                </div>
+
+                <p class="subtitle">
+                    Thank you for being the most amazing friend anyone could ask for.
+                    Your kindness, laughter, and endless support mean the world to me.
+                    Here's to many more years of incredible adventures together! 🎉
+                </p>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="app.showScreen('slideshow')">
+                        <i class="fas fa-arrow-left"></i> Back to Photos
+                    </button>
+                    <button class="btn btn-primary" onclick="app.startEmojiRain(); app.showScreen('welcome-screen')">
+                        <i class="fas fa-redo"></i> Celebrate Again!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="app.closeLightbox()">
+            <i class="fas fa-times"></i>
+        </button>
+        <button class="lightbox-nav lightbox-prev" onclick="app.previousImage()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="lightbox-nav lightbox-next" onclick="app.nextImage()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <div class="lightbox-content">
+            <div class="lightbox-image-container">
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="app.zoomImage('in')" title="Zoom In">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button class="zoom-btn" onclick="app.zoomImage('out')" title="Zoom Out">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button class="zoom-btn" onclick="app.resetZoom()" title="Reset Zoom">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </button>
+                </div>
+                <img class="lightbox-image" id="lightbox-image" src="" alt="">
+                <div class="slideshow-progress" id="slideshowProgress"></div>
+            </div>
+
+            <div class="slideshow-controls" id="slideshowControls">
+                <button class="slideshow-btn" onclick="app.toggleSlideshow()" id="slideshowToggle">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="slideshow-btn" onclick="app.previousImage()">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="slideshow-btn" onclick="app.nextImage()">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+                <select class="slideshow-btn" id="slideshowSpeed" onchange="app.setSlideshowSpeed(this.value)">
+                    <option value="2000">Fast</option>
+                    <option value="4000" selected>Normal</option>
+                    <option value="6000">Slow</option>
+                </select>
+            </div>
+
+            <div class="lightbox-info">
+                <h3 class="lightbox-title" id="lightbox-title"></h3>
+                <p class="lightbox-desc" id="lightbox-desc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Panel -->
+    <div class="shortcuts-panel" id="shortcutsPanel">
+        <h3 style="text-align: center; margin-bottom: 20px;">Keyboard Shortcuts</h3>
+        <ul class="shortcuts-list">
+            <li>
+                <span>Navigate Photos</span>
+                <span class="shortcut-key">← →</span>
+            </li>
+            <li>
+                <span>Close Lightbox</span>
+                <span class="shortcut-key">ESC</span>
+            </li>
+            <li>
+                <span>Zoom In/Out</span>
+                <span class="shortcut-key">+ -</span>
+            </li>
+            <li>
+                <span>Start Slideshow</span>
+                <span class="shortcut-key">Space</span>
+            </li>
+            <li>
+                <span>Toggle Favorite</span>
+                <span class="shortcut-key">F</span>
+            </li>
+            <li>
+                <span>Download Photo</span>
+                <span class="shortcut-key">D</span>
+            </li>
+            <li>
+                <span>Home Screen</span>
+                <span class="shortcut-key">H</span>
+            </li>
+        </ul>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-secondary" onclick="app.hideShortcuts()">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio Element for Background Music -->
+    <audio id="backgroundMusic" loop>
+        <!-- Using a simple silence track as placeholder -->
+    </audio>
+
+    <script>
+        const app = {
+            // Configuration
+            config: {
+                photos: [
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'First Adventure',
+                        description: 'The day we became inseparable friends. I remember how nervous we both were, but by the end of the day, it felt like we\'d known each other forever. This was the beginning of our beautiful friendship journey.',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'Beach Bliss',
+                        description: 'Sun, sand, and endless laughter. We spent hours building sandcastles, splashing in the waves, and just enjoying each other\'s company. The sunset that evening was absolutely magical!',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'Golden Hour',
+                        description: 'Our favorite sunset watching spot. We\'ve come here so many times, sharing dreams, secrets, and planning our future adventures. This place holds so many precious memories.',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'Pure Joy',
+                        description: 'Your smile lights up every room and every moment. This photo captures the essence of your beautiful spirit and the happiness you bring to everyone around you.',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'Amazing Times',
+                        description: 'Every moment with you is special. Whether we\'re having deep conversations or just being silly together, you make every experience more meaningful and fun.',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'Unforgettable',
+                        description: 'Memories that will last forever. These are the moments that define our friendship - full of love, laughter, and genuine connection that I treasure deeply.',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'Cherished',
+                        description: 'Timeless experiences to treasure. Every photo tells a story, and every story is a chapter in our beautiful friendship book.',
+                        favorite: false
+                    },
+                    {
+                        src: '/api/placeholder/800/600',
+                        title: 'BFF Forever',
+                        description: 'Through thick and thin, always together. You\'ve been my rock, my cheerleader, and my partner in crime. I can\'t imagine life without your friendship.',
+                        favorite: false
+                    }
+                ],
+                currentImageIndex: 0,
+                emojiList: ['🎉', '🎂', '🎈', '🎁', '✨', '💖', '🌟', '🦋', '🌸', '💫'],
+                themes: {
+                    default: {
+                        primary: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        secondary: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                        background: 'linear-gradient(-45deg, #667eea, #764ba2, #ffecd2, #fcb69f)'
+                    },
+                    sunset: {
+                        primary: 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)',
+                        secondary: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                        background: 'linear-gradient(-45deg, #ff7e5f, #feb47b, #fa709a, #fee140)'
+                    },
+                    ocean: {
+                        primary: 'linear-gradient(135deg, #0093E9 0%, #80D0C7 100%)',
+                        secondary: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                        background: 'linear-gradient(-45deg, #0093E9, #80D0C7, #a8edea, #fed6e3)'
+                    },
+                    forest: {
+                        primary: 'linear-gBAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQA

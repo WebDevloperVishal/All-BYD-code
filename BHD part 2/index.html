@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wish for My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="petals" id="petalsContainer"></div>
+    
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+
+        <!-- Step 1: Greeting -->
+        <div class="step" id="step1">
+            <h1>Happy Birthday, My Love!</h1>
+            <p>I've created something magical just for you.</p>
+            <p>Are you ready to begin this special journey?</p>
+            <img src="https://png.pngtree.com/png-vector/20250422/ourmid/pngtree-cute-girl-holding-birthday-cake-smiling-cheerfully-png-image_16067658.png" style="height: 200px;width: 200px;" alt="">
+            <button class="btn" onclick="nextStep()">Open Your Gift</button>
+        </div>
+
+        <!-- Step 2: Name Input -->
+        <div class="step" id="step2">
+            <h2>Let's Make This Personal</h2>
+            <p>What's the name of the most beautiful birthday girl in the world?</p>
+            <input type="text" class="name-input" id="nameInput" placeholder="Enter your name">
+            <button class="btn" onclick="saveName()">Continue</button>
+        </div>
+
+        <!-- Step 3: Heart Animation -->
+        <div class="step" id="step3">
+            <h2>For You, <span id="displayName">My Love</span></h2>
+            <p>Click on the heart to feel my love for you!</p>
+            <div class="heart" id="interactiveHeart" onclick="createHearts()"></div>
+            <div id="heartMessage" class="message-box">
+                <p>Every beat of my heart whispers your name, <span id="heartName">my love</span>.</p>
+            </div>
+            <button class="btn" onclick="nextStep()">Continue to Your Message</button>
+        </div>
+
+        <!-- Step 4: Birthday Message -->
+        <div class="step" id="step4">
+            <h2>My Special Message For You</h2>
+            <div class="photo-frame">
+                <!-- Replace with your image path -->
+                <img src="https://medias.artmajeur.com/standard/17262319_a-cutel-european-girl-full-bodycartoon-style-illustration-drawn-with-posca-markers-pretty-face-586679414-1.jpg?v=1738402496" alt="Beautiful You">
+            </div>
+            <div id="typedMessage" class="message-box">
+                <p class="typing-effect" id="typingText"></p>
+            </div>
+            <button class="btn" onclick="nextStep()">See Your Surprise</button>
+        </div>
+
+        <!-- Step 5: Memory Lane -->
+        <div class="step" id="step5">
+            <h2>Our Special Moments</h2>
+            <p>Some memories I'll cherish forever...</p>
+            <div class="memory-container">
+                <div class="polaroid">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Memory 1">
+                    <div class="polaroid-caption">Our First Date</div>
+                </div>
+                <div class="polaroid">
+                    <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Memory 2">
+                    <div class="polaroid-caption">Summer Days</div>
+                </div>
+               
+            </div>
+            <button class="btn" onclick="nextStep()">Your Final Surprise</button>
+        </div>
+
+        <!-- Step 6: Final Wish -->
+        <div class="step" id="step6">
+            <h1>🎉 Happy Birthday, <span id="finalName">My Love 💖</span>! 🎂</h1>
+        
+            <p>✨ May your day be filled with endless joy, sweet laughter, and all the love your heart can hold ✨</p>
+            <p>🌟 You light up my world just by being in it — like a million stars in my sky. 🌌</p>
+        
+            <p>⏳ Counting every moment until I can hold you and celebrate this magical day together! 🥰</p>
+        
+            <p>💌 With all my love, forever and always... 💫</p>
+        
+            <div class="signature">Yours truly, 💋</div>
+        
+            <div class="social-share">
+                <div class="social-icon" onclick="shareOnSocial('facebook')" title="Share on Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="social-icon" onclick="shareOnSocial('twitter')" title="Share on Twitter">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <div class="social-icon" onclick="shareOnSocial('whatsapp')" title="Share on WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+  <script src="script.js"></script>
+</body>
+</html>

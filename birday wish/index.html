@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Memory Lane</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #ffb6c1;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            border-radius: 0;
+            opacity: 0.7;
+            animation: fall 8s linear infinite;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b81;
+            transform: rotate(45deg);
+            opacity: 0.7;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b81;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background-color: #ff69b4;
+            border-radius: 50%;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .balloon:after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background-color: #ffd1dc;
+            bottom: -38px;
+            left: 15px;
+        }
+
+        .star {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid #a569bd;
+            transform: rotate(35deg);
+            opacity: 0.7;
+            animation: twinkle 5s ease-in-out infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.6);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .slideshow {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .photo {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo:hover img {
+            transform: scale(1.1);
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            padding: 10px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo:hover .caption {
+            opacity: 1;
+        }
+
+        .memory-text {
+            background-color: rgba(255, 105, 180, 0.2);
+            color: #ff1493;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin: 0 5px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .back-btn {
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+        }
+
+        .next-btn {
+            background: linear-gradient(to right, #ff69b4, #ff1493);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div id="background-elements"></div>
+
+    <!-- Welcome Screen -->
+    <div class="container screen active" id="welcome-screen">
+        <h1>Happy Birthday, My Bestie! <span class="emoji">🎉</span><span class="emoji">🎂</span></h1>
+        <button class="btn" onclick="showScreen('memory-lane')">Let's Go! ✨</button>
+    </div>
+
+    <!-- Memory Lane Screen -->
+    <div class="container screen" id="memory-lane">
+        <h1>Our Memory Lane</h1>
+        <p>A journey through the most incredible moments we've shared together. Hover over each photo to see why these memories mean so much to me! 💖 ❤️</p>
+        <button class="btn" onclick="showScreen('slideshow')">Start Slideshow</button>
+        <div class="photo-grid">
+            <div class="photo">
+                <img src="9ca038e9-a56e-4389-ada9-711aee2e95a1.jpg" alt="Memory 1">
+                <div class="caption">Our first adventure together!</div>
+            </div>
+            <div class="photo">
+                <img src="cc21598b-50be-4d8a-8212-9e349490f99c.jpg" alt="Memory 2">
+                <div class="caption">That day at the beach was perfect</div>
+            </div>
+            <div class="photo">
+                <img src="Pre Wedding Shoot In Jaipur.jpg" alt="Memory 3">
+                <div class="caption">Our favorite sunset spot</div>
+            </div>
+            <div class="photo">
+                <img src="Virushka.jpg" alt="Memory 4">
+                <div class="caption">Your smile brightens every day!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slideshow Screen -->
+    <div class="container screen" id="slideshow">
+        <h1>Picture Slideshow</h1>
+        <div class="slideshow">
+            <div class="photo">
+                <img src="afe95de1-707b-431b-813b-caf126885298.jpg" alt="Slideshow 1">
+            </div>
+            <div class="photo">
+                <img src="27723486-d1d3-46b8-965d-842e3af510ff.jpg" alt="Slideshow 2">
+            </div>
+            <div class="photo">
+                <img src="81096e00-98a8-415d-97ce-a1107b2d7fbc.jpg" alt="Slideshow 3">
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="btn back-btn" onclick="showScreen('memory-lane')">Back to Welcome</button>
+            <button class="btn next-btn" onclick="showScreen('surprise')">Next Surprise!</button>
+        </div>
+    </div>
+
+    <!-- Surprise Screen (you can customize this) -->
+    <div class="container screen" id="surprise">
+        <h1>Your Special Surprise!</h1>
+        <p>Because you deserve all the happiness in the world on your special day!</p>
+        <div class="emoji" style="font-size: 50px;">🎁 🎈 🎊</div>
+        <p>You've always been there for me, through thick and thin. I'm so grateful to have you as my best friend!</p>
+        <button class="btn" onclick="showScreen('welcome-screen')">Start Over</button>
+    </div>
+
+    <script>
+        // Create background elements
+        function createBackgroundElements() {
+            const bgElement = document.getElementById('background-elements');
+            
+            // Create confetti
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                confetti.style.backgroundColor = getRandomColor();
+                bgElement.appendChild(confetti);
+            }
+            
+            // Create hearts
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.transform = `rotate(45deg) scale(${0.5 + Math.random()})`;
+                bgElement.appendChild(heart);
+            }
+            
+            // Create balloons
+            for (let i = 0; i < 10; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = `${Math.random() * 100}%`;
+                balloon.style.top = `${Math.random() * 100}%`;
+                balloon.style.animationDelay = `${Math.random() * 5}s`;
+                balloon.style.backgroundColor = getRandomColor();
+                bgElement.appendChild(balloon);
+            }
+            
+            // Create stars
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.borderBottomColor = getRandomColor();
+                bgElement.appendChild(star);
+            }
+        }
+        
+        // Get random color
+        function getRandomColor() {
+            const colors = ['#ff69b4', '#ff1493', '#9b59b6', '#3498db', '#f1c40f', '#e74c3c', '#2ecc71'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Show screen function
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            createBackgroundElements();
+        };
+    </script>
+</body>
+</html>
